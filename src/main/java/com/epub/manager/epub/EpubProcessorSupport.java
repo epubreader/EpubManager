@@ -1,26 +1,17 @@
 package com.epub.manager.epub;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import com.epub.manager.Constants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import org.xmlpull.v1.XmlSerializer;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Various low-level support methods for reading/writing epubs.
@@ -67,24 +58,6 @@ public class EpubProcessorSupport {
 		EpubProcessorSupport.documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		documentBuilderFactory.setNamespaceAware(true);
 		documentBuilderFactory.setValidating(false);
-	}
-	
-	public static XmlSerializer createXmlSerializer(OutputStream out) throws UnsupportedEncodingException {
-		return createXmlSerializer(new OutputStreamWriter(out, Constants.CHARACTER_ENCODING));
-	}
-	
-	public static XmlSerializer createXmlSerializer(Writer out) {
-		XmlSerializer result = null;
-		try {
-			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-			factory.setValidating(true);
-			result = factory.newSerializer();
-			result.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-			result.setOutput(out);
-		} catch (Exception e) {
-			log.error("When creating XmlSerializer: " + e.getClass().getName() + ": " + e.getMessage());
-		}
-		return result;
 	}
 
 	/**

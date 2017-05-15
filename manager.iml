@@ -12,12 +12,24 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
-    <orderEntry type="library" name="Maven: xmlpull:xmlpull:1.1.3.4d_b4_min" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.25" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" name="Maven: org.idpf:epubcheck:4.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.5" level="project" />
+    <orderEntry type="library" name="Maven: org.daisy.libs:jing:20120724.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.w3c.css:sac:1.3" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:14.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-jpeg:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-core:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-metadata:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-lang:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-io:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-image:3.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.12" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.12" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:9.5.1-5" level="project" />
   </component>
 </module>
