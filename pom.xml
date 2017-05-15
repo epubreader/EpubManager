@@ -7,7 +7,7 @@
 
 	<groupId>com.epub</groupId>
 	<artifactId>manager</artifactId>
-	<name>epublib-core</name>
+    <name>epub-manager</name>
 	<description>A java library for epub manager</description>
 	<version>1.0.0</version>
 	<inceptionYear>2017</inceptionYear>
