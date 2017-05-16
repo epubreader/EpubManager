@@ -8,6 +8,7 @@ import com.epub.manager.epub.EpubReader;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
@@ -18,6 +19,20 @@ public class ZipReaderBehavior {
 
     @Test
     public void epublib() {
+        EpubReader reader = new EpubReader();
+        File file = new File("D:\\epub\\Summer_39_s_Destiny_-_Ariel_Marie.epub");
+
+        try {
+            Book readBook = reader.readEpub(new FileInputStream(file));
+            readBook.getTableOfContents();
+            Resource coverImage = readBook.getCoverImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void epublibLazy() {
         EpubReader reader = new EpubReader();
 
 

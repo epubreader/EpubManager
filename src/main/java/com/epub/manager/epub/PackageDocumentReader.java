@@ -338,6 +338,15 @@ public class PackageDocumentReader extends PackageDocumentBase {
 		if (StringUtil.isNotBlank(coverHref)) {
 			result.add(coverHref);
 		}
+
+		// for epub 3.0
+		String coverResourceId3 = DOMUtil.getFindAttributeValue(packageDocument, NAMESPACE_OPF,
+				OPFTags.item, OPFAttributes.properties, OPFValues.cover_image,
+				OPFAttributes.href);
+
+		if (StringUtil.isNotBlank(coverResourceId3)) {
+			result.add(coverResourceId3);
+		}
 		return result;
 	}
 
