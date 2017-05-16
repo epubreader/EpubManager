@@ -14,3 +14,20 @@ Example usage:
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+for lazy load zip entry, usage:
+
+    @Test
+    public void epublib() {
+        EpubReader reader = new EpubReader();
+
+
+        try {
+            ZipFile file = new ZipFile("D:\\epub\\Summer_39_s_Destiny_-_Ariel_Marie.epub");
+            Book readBook = reader.readEpubLazy(file, Constants.CHARACTER_ENCODING);
+            readBook.getTableOfContents();
+            Resource coverImage = readBook.getCoverImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }

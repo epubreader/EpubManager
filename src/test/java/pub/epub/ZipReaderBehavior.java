@@ -1,14 +1,15 @@
 package pub.epub;
 
 import com.adobe.epubcheck.api.EpubCheck;
+import com.epub.manager.Constants;
 import com.epub.manager.domain.Book;
 import com.epub.manager.domain.Resource;
 import com.epub.manager.epub.EpubReader;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.zip.ZipFile;
 
 /**
  * Created by Yong on 2017/5/14.
@@ -18,10 +19,11 @@ public class ZipReaderBehavior {
     @Test
     public void epublib() {
         EpubReader reader = new EpubReader();
-        File file = new File("D:\\epub\\Summer_39_s_Destiny_-_Ariel_Marie.epub");
+
 
         try {
-            Book readBook = reader.readEpub(new FileInputStream(file));
+            ZipFile file = new ZipFile("D:\\epub\\Summer_39_s_Destiny_-_Ariel_Marie.epub");
+            Book readBook = reader.readEpubLazy(file, Constants.CHARACTER_ENCODING);
             readBook.getTableOfContents();
             Resource coverImage = readBook.getCoverImage();
         } catch (IOException e) {
