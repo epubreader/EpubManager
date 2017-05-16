@@ -1,10 +1,10 @@
 package pub.epub;
 
 import com.adobe.epubcheck.api.EpubCheck;
-import com.epub.manager.Constants;
-import com.epub.manager.domain.Book;
-import com.epub.manager.domain.Resource;
-import com.epub.manager.epub.EpubReader;
+import com.github.epubreader.manager.Constants;
+import com.github.epubreader.manager.domain.Book;
+import com.github.epubreader.manager.domain.Resource;
+import com.github.epubreader.manager.epub.EpubReader;
 import org.junit.Test;
 
 import java.io.File;
