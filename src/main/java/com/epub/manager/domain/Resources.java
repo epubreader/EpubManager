@@ -1,16 +1,11 @@
 package com.epub.manager.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.epub.manager.Constants;
 import com.epub.manager.service.MediatypeService;
 import com.epub.manager.util.StringUtil;
-import com.epub.manager.Constants;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * All the resources that make up the book.
@@ -372,4 +367,20 @@ public class Resources implements Serializable {
 	public Collection<String> getAllHrefs() {
 		return resources.keySet();
 	}
+
+	/**
+	 * Gets the first resource (random order) with the give properties.
+	 *
+	 * @param properties
+	 * @return the first resource (random order) with the give properties.
+	 */
+	public Resource findFirstResourceByProperties(String properties) {
+		for (Resource resource : resources.values()) {
+			if (resource.getProperties() != null && resource.getProperties().toLowerCase().startsWith(properties.toLowerCase())) {
+				return resource;
+			}
+		}
+		return null;
+	}
+
 }

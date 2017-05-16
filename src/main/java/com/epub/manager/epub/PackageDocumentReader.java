@@ -1,38 +1,22 @@
 package com.epub.manager.epub;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import com.epub.manager.domain.Book;
-import com.epub.manager.domain.MediaType;
-import com.epub.manager.domain.Spine;
-import com.epub.manager.domain.SpineReference;
+import com.epub.manager.Constants;
+import com.epub.manager.domain.*;
 import com.epub.manager.service.MediatypeService;
 import com.epub.manager.util.ResourceUtil;
-import com.epub.manager.Constants;
-import com.epub.manager.domain.Guide;
-import com.epub.manager.domain.GuideReference;
-import com.epub.manager.domain.Resource;
-import com.epub.manager.domain.Resources;
 import com.epub.manager.util.StringUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * Reads the opf package document as defined by namespace http://www.idpf.org/2007/opf
@@ -116,6 +100,11 @@ public class PackageDocumentReader extends PackageDocumentBase {
 			MediaType mediaType = MediatypeService.getMediaTypeByName(mediaTypeName);
 			if(mediaType != null) {
 				resource.setMediaType(mediaType);
+			}
+			// add properties
+			String properties = DOMUtil.getAttribute(itemElement, NAMESPACE_OPF, OPFAttributes.properties);
+			if (StringUtil.isNotBlank(properties)) {
+				resource.setProperties(properties.trim());
 			}
 			result.add(resource);
 			idMapping.put(id, resource.getId());
@@ -273,9 +262,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	 * 
 	 * Here we try several ways of finding this table of contents resource.
 	 * We try the given attribute value, some often-used ones and finally look through all resources for the first resource with the table of contents mimetype.
-	 * 
-	 * @param spineElement
-	 * @param resourcesById
+	 *
 	 * @return the Resource containing the table of contents
 	 */
 	static Resource findTableOfContentsResource(String tocResourceId, Resources resources) {
@@ -289,8 +276,14 @@ public class PackageDocumentReader extends PackageDocumentBase {
 		}
 		
 		// get the first resource with the NCX mediatype
-		tocResource = resources.findFirstResourceByMediaType(MediatypeService.NCX);
+		tocResource = resources.findFirstResourceByProperties("nav");
+		// get the toc by properties nav
+		if (tocResource != null) {
+			return tocResource;
+		}
 
+		//Element manifestElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.getDocumentElement(), NAMESPACE_OPF, OPFTags.manifest);
+		//manifestElement.getE
 		if (tocResource == null) {
 			for (int i = 0; i < POSSIBLE_NCX_ITEM_IDS.length; i++) {
 				tocResource = resources.getByIdOrHref(POSSIBLE_NCX_ITEM_IDS[i]);
