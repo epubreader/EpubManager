@@ -1,6 +1,6 @@
 # EpubManager
 
-EpubManager is a java library for reading/manipulating epub files.
+EpubManager is a java library for reading/manipulating epub files. Support both epub 2.0 and epub 3.0.
 
 Example usage:
 
