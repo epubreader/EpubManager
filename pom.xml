@@ -5,17 +5,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.epub</groupId>
+	<groupId>com.github.epubreader</groupId>
 	<artifactId>manager</artifactId>
     <name>epub-manager</name>
 	<description>A java library for epub manager</description>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<inceptionYear>2017</inceptionYear>
 
 	<scm>
-		<connection>scm:git:https://github.com/eimhee/EpubManager.git</connection>
-		<developerConnection>scm:git:https://github.com/eimhee/EpubManager.git</developerConnection>
-		<url>https://github.com/eimhee/EpubManager</url>
+		<connection>scm:git:https://github.com/epubreader/EpubManager.git</connection>
+		<developerConnection>scm:git:https://github.com/epubreader/EpubManager.git</developerConnection>
+		<url>https://github.com/epubreader/EpubManager</url>
 		<tag>HEAD</tag>
 	</scm>
 
