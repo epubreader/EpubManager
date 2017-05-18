@@ -5,6 +5,7 @@ import com.github.epubreader.manager.domain.Book;
 import com.github.epubreader.manager.domain.Resource;
 import com.github.epubreader.manager.domain.TOCReference;
 import com.github.epubreader.manager.domain.TableOfContents;
+import com.github.epubreader.manager.exception.ReadingException;
 import com.github.epubreader.manager.util.ResourceUtil;
 import com.github.epubreader.manager.util.StringUtil;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class NCXDocument {
         Resource ncxResource = null;
         if (book.getSpine().getTocResource() == null) {
             log.error("Book does not contain a table of contents file");
-            return ncxResource;
+            throw new ReadingException("Book does not contain a table of contents file");
         }
         try {
             ncxResource = book.getSpine().getTocResource();

@@ -1,6 +1,5 @@
 package pub.epub;
 
-import com.adobe.epubcheck.api.EpubCheck;
 import com.github.epubreader.manager.Constants;
 import com.github.epubreader.manager.domain.Book;
 import com.github.epubreader.manager.domain.Resource;
@@ -47,8 +46,22 @@ public class ZipReaderBehavior {
     }
 
     @Test
+    public void epublib2() {
+        EpubReader reader = new EpubReader();
+        File file = new File("D:\\eclipse-epub\\mobilism\\web\\target\\web-0.0.1-SNAPSHOT.jar");
+
+        try {
+            Book readBook = reader.readEpub(new FileInputStream(file));
+            readBook.getTableOfContents();
+            Resource coverImage = readBook.getCoverImage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    @Test
     public void epubCheck() {
-        File epubFile = new File("D:\\epub\\Summer_39_s_Destiny_-_Ariel_Marie.epub");
+        File epubFile = new File("D:\\epub\\mobilism\\2017-05-16\\welcome-to-my-country-lauren-slater.epub");
 
 // simple constructor; errors are printed on stderr stream
         EpubCheck epubcheck = new EpubCheck(epubFile);
@@ -56,5 +69,5 @@ public class ZipReaderBehavior {
 // validate() returns true if no errors or warnings are found
         boolean result = epubcheck.validate();
         System.out.print(result);
-    }
+    }*/
 }

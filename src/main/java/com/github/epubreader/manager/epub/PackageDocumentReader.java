@@ -2,6 +2,7 @@ package com.github.epubreader.manager.epub;
 
 import com.github.epubreader.manager.Constants;
 import com.github.epubreader.manager.domain.*;
+import com.github.epubreader.manager.exception.ReadingException;
 import com.github.epubreader.manager.service.MediatypeService;
 import com.github.epubreader.manager.util.ResourceUtil;
 import com.github.epubreader.manager.util.StringUtil;
@@ -32,6 +33,9 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	
 	public static void read(Resource packageResource, EpubReader epubReader, Book book, Resources resources) throws UnsupportedEncodingException, SAXException, IOException, ParserConfigurationException {
 		Document packageDocument = ResourceUtil.getAsDocument(packageResource);
+		if (packageDocument == null) {
+			throw new ReadingException("packageDocument not found");
+		}
 		String packageHref = packageResource.getHref();
 		resources = fixHrefs(packageHref, resources);
 		readGuide(packageDocument, epubReader, book, resources);
