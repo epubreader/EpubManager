@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.xpath.*;
 import java.io.UnsupportedEncodingException;
@@ -79,6 +80,8 @@ public class NCXDocument {
                 return ncxResource;
             }
             Document ncxDocument = ResourceUtil.getAsDocument(ncxResource);
+
+
             TableOfContents tableOfContents = null;
             // Find item with property 'nav', Should catch nav irregardless of order
             if (StringUtil.isNotBlank(ncxResource.getProperties()) && ncxResource.getProperties().toLowerCase().startsWith("nav")) {
@@ -91,9 +94,13 @@ public class NCXDocument {
             }
 
             book.setTableOfContents(tableOfContents);
+        } catch (SAXParseException e) {
+            log.error(e.getMessage(), e);
+            throw new ReadingException("Book not validate");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
+
         return ncxResource;
     }
 
