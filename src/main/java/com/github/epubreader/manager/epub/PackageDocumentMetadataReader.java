@@ -140,8 +140,12 @@ class PackageDocumentMetadataReader extends PackageDocumentBase {
 			Element dateElement = (Element) elements.item(i);
 			Date date;
 			try {
-				date = new Date(DOMUtil.getTextChildrenContent(dateElement), dateElement.getAttributeNS(NAMESPACE_OPF, OPFAttributes.event));
-				result.add(date);
+				String dateString = DOMUtil.getTextChildrenContent(dateElement);
+				if (StringUtil.isNotBlank(dateString)) {
+					date = new Date(dateString, dateElement.getAttributeNS(NAMESPACE_OPF, OPFAttributes.event));
+					result.add(date);
+				}
+
 			} catch(IllegalArgumentException e) {
 				log.error(e.getMessage());
 			}
