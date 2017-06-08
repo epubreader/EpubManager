@@ -34,10 +34,12 @@ public class StringUtil {
 				parts.remove(i);
 				i--;
 			} else if (currentDir.equals("..")) {
-				parts.remove(i - 1);
-				parts.remove(i - 1);
-				i -= 2;
-			}
+                if (i > 0) {
+                    parts.remove(i - 1);
+                    parts.remove(i - 1);
+                    i -= 2;
+                }
+            }
 		}
 		StringBuilder result = new StringBuilder();
 		if (path.startsWith("/")) {

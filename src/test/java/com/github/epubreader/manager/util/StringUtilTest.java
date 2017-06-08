@@ -189,8 +189,9 @@ public class StringUtilTest  {
 			"/foo/bar.html", "/foo/./bar.html", //
 			"/foo/bar.html", //
 			"/a/b/../../c", "/c", //
-			"/foo/../sub/bar.html", "/sub/bar.html" //
-		};
+                "/foo/../sub/bar.html", "/sub/bar.html", //
+                "../foo/../sub/bar.html", "../sub/bar.html", //
+        };
 		for (int i = 0; i < testData.length; i += 2) {
 			String actualResult = StringUtil.collapsePathDots(testData[i]);
 			assertEquals(testData[i], testData[i + 1], actualResult);
