@@ -22,46 +22,50 @@ public class ZipReaderBehavior {
         //File file = new File("D:\\epub\\mobilism\\Tiger Tracks - The Classic Panz - Wolfgang Faust.epub");
 
         try {
-            ZipFile file = new ZipFile("D:\\epub\\mobilism\\ACGH-IS.epub");
+            ZipFile file = new ZipFile("D:\\epub\\mobilism\\Tiger Tracks - The Classic Panz - Wolfgang Faust.epub");
             Book readBook = reader.readEpubLazy(file, Constants.CHARACTER_ENCODING);
-            readBook.getTableOfContents();
+
             Resource coverImage = readBook.getCoverImage();
 
+            if (coverImage != null) {
+                System.out.println("coverImage:" + coverImage.getHref());
+                System.out.println("coverImage:" + coverImage.getData());
+            }
 
             Metadata metadata = readBook.getMetadata();
             // title
             String title = metadata.getTitles().stream().findFirst().get();
-            System.out.println(title);
+            System.out.println("title:" + title);
             //language
             String language = metadata.getLanguage();
-            System.out.println(language);
+            System.out.println("language:" + language);
 
             //identifier
             Identifier identifier = metadata.getIdentifiers().stream().findFirst().get();
-            System.out.println(identifier);
+            System.out.println("identifier:" + identifier);
 
             //creator
             Author author = metadata.getAuthors().stream().findFirst().get();
-            System.out.println(author.getFirstname() + " " + author.getLastname());
+            System.out.println("author" + author.getFirstname() + " " + author.getLastname());
 
 
             //contributor
             if (!metadata.getContributors().isEmpty()) {
                 Author contributor = metadata.getContributors().stream().findFirst().get();
-                System.out.println(contributor.getFirstname() + " " + contributor.getLastname());
+                System.out.println("contributor:" + contributor.getFirstname() + " " + contributor.getLastname());
             }
 
             //publisher
             if (!metadata.getPublishers().isEmpty()) {
                 String publisher = metadata.getPublishers().stream().findFirst().get();
-                System.out.println(publisher);
+                System.out.println("publisher:" + publisher);
             }
 
             //subject
             List<String> subjects = metadata.getSubjects();
             if (!subjects.isEmpty()) {
                 for (String subject : subjects) {
-                    System.out.println(subject);
+                    System.out.println("subjects:" + subject);
                 }
             }
             ;
@@ -70,7 +74,7 @@ public class ZipReaderBehavior {
             List<String> descriptions = metadata.getDescriptions();
             if (!subjects.isEmpty()) {
                 for (String description : descriptions) {
-                    System.out.println(description);
+                    System.out.println("descriptions:" + description);
                 }
 
             }
@@ -79,11 +83,16 @@ public class ZipReaderBehavior {
             List<Date> dates = metadata.getDates();
             if (!dates.isEmpty()) {
                 for (Date date : dates) {
-                    System.out.println(dates);
+                    System.out.println("date:" + dates);
                 }
 
             }
 
+            TableOfContents tableOfContents = readBook.getTableOfContents();
+            List<TOCReference> tocReferences = tableOfContents.getTocReferences();
+            for (TOCReference tocReference : tocReferences) {
+                System.out.println("tableOfContents:" + tocReference.getTitle());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,7 +131,7 @@ public class ZipReaderBehavior {
 
 /*    @Test
     public void epubCheck() {
-        File epubFile = new File("D:\\epub\\mobilism\\2017-05-16\\welcome-to-my-country-lauren-slater.epub");
+        File epubFile = new File("D:\\epub\\mobilism\\ACGH-IS.epub");
 
 // simple constructor; errors are printed on stderr stream
         EpubCheck epubcheck = new EpubCheck(epubFile);

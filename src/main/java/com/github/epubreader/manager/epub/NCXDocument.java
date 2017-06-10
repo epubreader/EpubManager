@@ -6,6 +6,7 @@ import com.github.epubreader.manager.domain.Resource;
 import com.github.epubreader.manager.domain.TOCReference;
 import com.github.epubreader.manager.domain.TableOfContents;
 import com.github.epubreader.manager.exception.ReadingException;
+import com.github.epubreader.manager.util.PathUtil;
 import com.github.epubreader.manager.util.ResourceUtil;
 import com.github.epubreader.manager.util.StringUtil;
 import org.slf4j.Logger;
@@ -125,13 +126,10 @@ public class NCXDocument {
 
     static TOCReference readTOCReference(Element navpointElement, Book book) {
         String label = readNavLabel(navpointElement);
-        String tocResourceRoot = StringUtil.substringBeforeLast(book.getSpine().getTocResource().getHref(), '/');
-        if (tocResourceRoot.length() == book.getSpine().getTocResource().getHref().length()) {
-            tocResourceRoot = "";
-        } else {
-            tocResourceRoot = tocResourceRoot + "/";
-        }
-        String reference = StringUtil.collapsePathDots(tocResourceRoot + readNavReference(navpointElement));
+
+        String opfHref = book.getOpfResource().getHref();
+        String reference = PathUtil.resolveRelativeReference(opfHref, readNavReference(navpointElement), null);
+        //String reference = StringUtil.collapsePathDots(tocResourceRoot + readNavReference(navpointElement));
         String href = StringUtil.substringBefore(reference, Constants.FRAGMENT_SEPARATOR_CHAR);
         String fragmentId = StringUtil.substringAfter(reference, Constants.FRAGMENT_SEPARATOR_CHAR);
         Resource resource = book.getResources().getByHref(href);

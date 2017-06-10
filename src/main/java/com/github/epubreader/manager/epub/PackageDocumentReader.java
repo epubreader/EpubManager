@@ -4,6 +4,7 @@ import com.github.epubreader.manager.Constants;
 import com.github.epubreader.manager.domain.*;
 import com.github.epubreader.manager.exception.ReadingException;
 import com.github.epubreader.manager.service.MediatypeService;
+import com.github.epubreader.manager.util.PathUtil;
 import com.github.epubreader.manager.util.ResourceUtil;
 import com.github.epubreader.manager.util.StringUtil;
 import org.slf4j.Logger;
@@ -37,15 +38,15 @@ public class PackageDocumentReader extends PackageDocumentBase {
 			throw new ReadingException("packageDocument not found");
 		}
 		String packageHref = packageResource.getHref();
-		resources = fixHrefs(packageHref, resources);
-		readGuide(packageDocument, epubReader, book, resources);
+		//resources = fixHrefs(packageHref, resources);
+		readGuide(packageDocument, epubReader, book, resources, packageHref);
 		
 		// Books sometimes use non-identifier ids. We map these here to legal ones
 		Map<String, String> idMapping = new HashMap<String, String>();
 		
 		resources = readManifest(packageDocument, packageHref, epubReader, resources, idMapping);
 		book.setResources(resources);
-		readCover(packageDocument, book);
+		readCover(packageDocument, book, packageHref);
 		book.setMetadata(PackageDocumentMetadataReader.readMetadata(packageDocument));
 		book.setSpine(readSpine(packageDocument, book.getResources(), idMapping));
 		
@@ -72,8 +73,6 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	 * @param packageDocument
 	 * @param packageHref
 	 * @param epubReader
-	 * @param book
-	 * @param resourcesByHref
 	 * @return a Map with resources, with their id's as key.
 	 */
 	private static Resources readManifest(Document packageDocument, String packageHref,
@@ -95,7 +94,9 @@ public class PackageDocumentReader extends PackageDocumentBase {
 				log.error(e.getMessage());
 			}
 			String mediaTypeName = DOMUtil.getAttribute(itemElement, NAMESPACE_OPF, OPFAttributes.media_type);
-			Resource resource = resources.remove(href);
+			String reference = PathUtil.resolveRelativeReference(packageHref, href, null);
+
+			Resource resource = resources.remove(reference);
 			if(resource == null) {
 				log.error("resource with href '" + href + "' not found");
 				continue;
@@ -129,7 +130,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	 * @param resources
 	 */
 	private static void readGuide(Document packageDocument,
-			EpubReader epubReader, Book book, Resources resources) {
+								  EpubReader epubReader, Book book, Resources resources, String packageHref) {
 		Element guideElement = DOMUtil.getFirstElementByTagNameNS(packageDocument.getDocumentElement(), NAMESPACE_OPF, OPFTags.guide);
 		if(guideElement == null) {
 			return;
@@ -142,7 +143,9 @@ public class PackageDocumentReader extends PackageDocumentBase {
 			if (StringUtil.isBlank(resourceHref)) {
 				continue;
 			}
-			Resource resource = resources.getByHref(StringUtil.substringBefore(resourceHref, Constants.FRAGMENT_SEPARATOR_CHAR));
+			String referenceHref = PathUtil.resolveRelativeReference(packageHref, StringUtil.substringBefore(resourceHref, Constants.FRAGMENT_SEPARATOR_CHAR), null);
+
+			Resource resource = resources.getByHref(StringUtil.substringBefore(referenceHref, Constants.FRAGMENT_SEPARATOR_CHAR));
 			if (resource == null) {
 				log.error("Guide is referencing resource with href " + resourceHref + " which could not be found");
 				continue;
@@ -272,7 +275,7 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	static Resource findTableOfContentsResource(String tocResourceId, Resources resources) {
 		Resource tocResource = null;
 		if (StringUtil.isNotBlank(tocResourceId)) {
-			tocResource = resources.getByIdOrHref(tocResourceId);
+			tocResource = resources.getById(tocResourceId);
 		}
 		
 		if (tocResource != null) {
@@ -361,11 +364,13 @@ public class PackageDocumentReader extends PackageDocumentBase {
 	 * @param book
 	 * @param resources
 	 */
-	private static void readCover(Document packageDocument, Book book) {
+	private static void readCover(Document packageDocument, Book book, String packageHref) {
 		
 		Collection<String> coverHrefs = findCoverHrefs(packageDocument);
 		for (String coverHref: coverHrefs) {
-			Resource resource = book.getResources().getByHref(coverHref);
+			String referenceHref = PathUtil.resolveRelativeReference(packageHref, coverHref, null);
+
+			Resource resource = book.getResources().getByHref(referenceHref);
 			if (resource == null) {
 				log.error("Cover resource " + coverHref + " not found");
 				continue;
